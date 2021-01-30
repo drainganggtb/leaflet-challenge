@@ -9,10 +9,8 @@ html {
   height: 100%;
 }
 
-
-.legend {
-  line-height: 18px;
-  color: #555;
+b {
+  margin-left: 25px;
 }
 .legend i {
   width: 18px;

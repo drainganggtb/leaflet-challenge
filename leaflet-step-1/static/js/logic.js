@@ -104,7 +104,7 @@ function createMap(earthquakes) {
     var div = L.DomUtil.create('div', 'info legend');
     var labels=["Minor", "Light", "Moderate", "Strong", "Major", "Great"];
     var magnitudes = [0,1,2,3,4,5];
-    div.innerHTML='<div><b>Earthquakes from last 7 Days</b></div';
+    div.innerHTML='<div><b>Earthquakes</b> <br> 1/21/2021-1/28/2021</div';
     for (var i = 0; i < magnitudes.length; i++) {
       div.innerHTML +=
         '<i style="background:' + getColor(magnitudes[i]) + '"></i> ' + labels[i] + '<br>';
