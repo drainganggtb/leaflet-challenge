@@ -33,9 +33,9 @@ The main idea of this assignment was to visualize an earthquake dataset.
 
 ![alt text](leaflet-step-1/Images/mymap.png)
 
-    A second data set has been added to the map to show tectonic plate boundaries, in order to illustrate how seismic activity occurs on the boundaries of plates. The second dataset was found at <https://github.com/fraxen/tectonicplates>.
+A second data set has been added to the map to show tectonic plate boundaries, in order to illustrate how seismic activity occurs on the boundaries of plates. The second dataset was found at <https://github.com/fraxen/tectonicplates>.
 
-    Other improvements to the basic map were the additions of layer controls for multiple baseMaps and the earthquake and tectonic plate boundary datasets. 
+Other improvements to the basic map were the additions of layer controls for multiple baseMaps and the earthquake and tectonic plate boundary datasets. 
 
 
 
