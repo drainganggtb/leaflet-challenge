@@ -98,7 +98,20 @@ function createMap(earthquakes) {
   });
   
   //create legend
-  
+  var legend = L.control({position: 'bottomright'});
+
+  legend.onAdd=function(map){
+    var div = L.DomUtil.create('div', 'info legend');
+    var labels=["Minor", "Light", "Moderate", "Strong", "Major", "Great"];
+    var magnitudes = [0,1,2,3,4,5];
+    div.innerHTML='<div><b>Earthquakes from last 7 Days</b></div';
+    for (var i = 0; i < magnitudes.length; i++) {
+      div.innerHTML +=
+        '<i style="background:' + getColor(magnitudes[i]) + '"></i> ' + labels[i] + '<br>';
+    }
+    return div;
+  };
+  legend.addTo(myMap);
 
  
 
