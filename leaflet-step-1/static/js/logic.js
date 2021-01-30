@@ -1,4 +1,4 @@
-// Store our API endpoint inside queryUrl
+// Store API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 //colorbrewer colors to be used in getColor function
@@ -88,9 +88,10 @@ function createMap(earthquakes) {
   // Create our map, giving it the streetmap and earthquakes layers to display on load
   var myMap = L.map("map", {
     center: [
-      37.09, -95.71
+      -.777259, -91.142578
     ],
     zoom: 3,
+    pitch: 60,
     layers: [light, dark, earthquakes]
   });
   
