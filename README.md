@@ -15,7 +15,7 @@ In this repository, the main directory folder contains the code used to create t
 
 The main idea of this assignment was to visualize an earthquake dataset. 
 
-![alt text](leaflet-step-1/Images/basic.png)
+![alt text](leaflet-step-1/Images/quake.png)
 
 1. **Get your data set**
 
