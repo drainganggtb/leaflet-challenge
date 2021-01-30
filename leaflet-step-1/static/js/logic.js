@@ -24,7 +24,7 @@ function getColor(d) {
 
 //function based on depth (m) to get radius of markers(pixels)
 function getRadius(d) {
-    return 15000 * d;
+    return 2000 * d;
 }
 
 
@@ -34,9 +34,9 @@ d3.json(queryUrl, function(earthquakeData) {
 });
 
 function createFeatures(earthquakeData) {
-
+    //point to layer used to apply circles
     var earthquakes = L.geoJSON(earthquakeData, {
-        onEachFeature: function(feature, latlng) {
+        pointToLayer: function(feature, latlng) {
 
             var color = getColor(feature.properties.mag);
 
