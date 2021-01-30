@@ -15,7 +15,7 @@ In this repository, the main directory folder contains the code used to create t
 
 The main idea of this assignment was to visualize an earthquake dataset. 
 
-    ![alt text](leaflet-step-1/Images/basic.png)
+![alt text](leaflet-step-1/Images/basic.png)
 
 1. **Get your data set**
 
@@ -31,7 +31,7 @@ The main idea of this assignment was to visualize an earthquake dataset.
 
 ## Level 2: More Data
 
-    ![alt text](leaflet-step-1/Images/mymap.png)
+![alt text](leaflet-step-1/Images/mymap.png)
 
     A second data set has been added to the map to show tectonic plate boundaries, in order to illustrate how seismic activity occurs on the boundaries of plates. The second dataset was found at <https://github.com/fraxen/tectonicplates>.
 
