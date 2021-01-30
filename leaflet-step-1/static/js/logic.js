@@ -1,6 +1,8 @@
 // Store API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
+var tectonicURL = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
+
 //colorbrewer colors to be used in getColor function
 //['#fee5d9','#fcbba1','#fc9272','#fb6a4a','#de2d26','#a50f15']
 
@@ -30,10 +32,16 @@ function getRadius(d) {
 
 // Perform a GET request to the query URL
 d3.json(queryUrl, function(earthquakeData) {
-    createFeatures(earthquakeData.features);
+  //once we get response, query second source of data
+  d3.json(tectonicURL, function(plateData) {
+    console.log(plateData);
+
+    createFeatures(earthquakeData.features, plateData.features);
+  });
+    
 });
 
-function createFeatures(earthquakeData) {
+function createFeatures(earthquakeData, plateData) {
     //point to layer used to apply circles
     var earthquakes = L.geoJSON(earthquakeData, {
         pointToLayer: function(feature, latlng) {
@@ -53,13 +61,23 @@ function createFeatures(earthquakeData) {
             "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
         }
     });
+
+    //plate layer
+    var plates = L.geoJSON(plateData, {
+      style: function (feature) {
+        return {
+          color: '#f768a1',
+          weight: 1
+        };
+      }
+    });
   
     // Sending our earthquakes layer to the createMap function
-    createMap(earthquakes);
+    createMap(earthquakes, plates);
   }
   
 
-function createMap(earthquakes) {
+function createMap(earthquakes, plates) {
 
   // Define basemap layers and call for tile layers
   var satelliteMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -74,17 +92,25 @@ function createMap(earthquakes) {
     id: "dark-v10",
     accessToken: API_KEY
   });
+  var light = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+    maxZoom: 18,
+    id: "light-v10",
+    accessToken: API_KEY
+  });
 
   
   // Define a baseMaps object to hold our base layers
   var baseMaps = {
     "Satellite": satelliteMap,
-    "Dark": dark
+    "Dark": dark,
+    "Greyscale": light
   };
 
   // Create overlay object to hold our overlay layer
   var overlayMaps = {
-    "Earthquakes": earthquakes
+    "Earthquakes": earthquakes,
+    "Tectonic Plate Boundaries": plates
   };
 
   // Create our map, giving it the streetmap and earthquakes layers to display on load
@@ -94,7 +120,7 @@ function createMap(earthquakes) {
     ],
     zoom: 3,
     pitch: 60,
-    layers: [satelliteMap, dark, earthquakes]
+    layers: [satelliteMap, dark, light, plates, earthquakes]
   });
   
   //create legend
