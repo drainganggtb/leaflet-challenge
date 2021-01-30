@@ -2,29 +2,29 @@
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 //colorbrewer colors to be used in getColor function
-// ['#ffffb2','#fed976','#feb24c','#fd8d3c','#f03b20','#bd0026']
+//['#fee5d9','#fcbba1','#fc9272','#fb6a4a','#de2d26','#a50f15']
 
 //function to determine color of markers
 function getColor(d) {
     if (d < 1) {
-        color = '#ffffb2';
+        color = '#fee5d9';
     } else if (d <2) {
-        color= '#fed976';
+        color= '#fcbba1';
     } else if (d <3) {
-        color= '#feb24c';
+        color= '#fc9272';
     } else if (d <4) {
-        color= '#fd8d3c';
+        color= '#fb6a4a';
     } else if (d <5) {
-        color= '#f03b20';
+        color= '#de2d26';
     } else {
-        color= '#bd0026';
+        color= '#a50f15';
     }
     return color
 }
 
 //function based on depth (m) to get radius of markers(pixels)
 function getRadius(d) {
-    return 2000 * d;
+    return 1500 * d;
 }
 
 
@@ -46,6 +46,7 @@ function createFeatures(earthquakeData) {
                 color: color,
                 fillColor: color,
                 opacity: 0.75,
+                fillOpacity: .75,
                 radius: getRadius(feature.geometry.coordinates[2])
             }).bindPopup("<h3>" + feature.properties.place +
             "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
@@ -60,10 +61,10 @@ function createFeatures(earthquakeData) {
 function createMap(earthquakes) {
 
   // Define basemap layers and call for tile layers
-  var light = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+  var satelliteMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 18,
-    id: "light-v10",
+    maxZoom: 80,
+    id: "satellite-streets-v9",
     accessToken: API_KEY
   });
   var dark = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -76,7 +77,7 @@ function createMap(earthquakes) {
   
   // Define a baseMaps object to hold our base layers
   var baseMaps = {
-    "Light": light,
+    "Satellite": satelliteMap,
     "Dark": dark
   };
 
@@ -92,7 +93,7 @@ function createMap(earthquakes) {
     ],
     zoom: 3,
     pitch: 60,
-    layers: [light, dark, earthquakes]
+    layers: [satelliteMap, dark, earthquakes]
   });
   
  
