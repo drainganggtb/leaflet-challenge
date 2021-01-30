@@ -33,28 +33,51 @@ d3.json(queryUrl, function(earthquakeData) {
     createFeatures(earthquakeData.features);
 });
 
+function createFeatures(earthquakeData) {
+
+    var earthquakes = L.geoJSON(earthquakeData, {
+        onEachFeature: function(feature, latlng) {
+
+            var color = getColor(feature.properties.mag);
+
+            //add circles
+            return L.circle(latlng, {
+                weight: 1,
+                color: color,
+                fillColor: color,
+                opacity: 0.75,
+                radius: getRadius(feature.geometry.coordinates[2])
+            }).bindPopup("<h3>" + feature.properties.place +
+            "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+        }
+    });
+  
+    // Sending our earthquakes layer to the createMap function
+    createMap(earthquakes);
+  }
+  
 
 function createMap(earthquakes) {
 
-  // Define streetmap and darkmap layers
-  var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+  // Define basemap layers and call for tile layers
+  var light = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
     id: "light-v10",
     accessToken: API_KEY
   });
-
-  var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+  var dark = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
     id: "dark-v10",
     accessToken: API_KEY
   });
 
+  
   // Define a baseMaps object to hold our base layers
   var baseMaps = {
-    "Light Map": lightmap,
-    "Dark Map": darkmap
+    "Light": light,
+    "Dark": dark
   };
 
   // Create overlay object to hold our overlay layer
@@ -63,13 +86,15 @@ function createMap(earthquakes) {
   };
 
   // Create our map, giving it the streetmap and earthquakes layers to display on load
-  var myMap = L.map("mapid", {
+  var myMap = L.map("map", {
     center: [
       37.09, -95.71
     ],
-    zoom: 5,
-    layers: [darkmap, earthquakes]
+    zoom: 3,
+    layers: [light, dark, earthquakes]
   });
+  
+ 
 
   // Create a layer control
   // Pass in our baseMaps and overlayMaps
@@ -79,22 +104,3 @@ function createMap(earthquakes) {
   }).addTo(myMap);
 }
 
-function createFeatures(earthquakeData) {
-    
-
-  // Define a function we want to run once for each feature in the features array
-  // Give each feature a popup describing the place and time of the earthquake
-  function onEachFeature(feature, layer) {
-    layer.bindPopup("<h3>" + feature.properties.place +
-      "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
-  }
-
-  // Create a GeoJSON layer containing the features array on the earthquakeData object
-  // Run the onEachFeature function once for each piece of data in the array
-  var earthquakes = L.geoJSON(earthquakeData, {
-    onEachFeature: onEachFeature
-  });
-
-  // Sending our earthquakes layer to the createMap function
-  createMap(earthquakes);
-}
