@@ -98,7 +98,7 @@ function createMap(earthquakes) {
   });
   
   //create legend
-  map.legendControl.addLegend(document.getElementById('legend').innerHTML);
+  
 
  
 
