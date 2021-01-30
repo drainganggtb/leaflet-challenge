@@ -47,6 +47,7 @@ function createFeatures(earthquakeData) {
                 fillColor: color,
                 opacity: 0.75,
                 fillOpacity: .75,
+                // radius is related to depth
                 radius: getRadius(feature.geometry.coordinates[2])
             }).bindPopup("<h3>" + feature.properties.place +
             "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
@@ -64,7 +65,7 @@ function createMap(earthquakes) {
   var satelliteMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 80,
-    id: "satellite-streets-v9",
+    id: "satellite-v9",
     accessToken: API_KEY
   });
   var dark = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -96,6 +97,9 @@ function createMap(earthquakes) {
     layers: [satelliteMap, dark, earthquakes]
   });
   
+  //create legend
+  map.legendControl.addLegend(document.getElementById('legend').innerHTML);
+
  
 
   // Create a layer control
