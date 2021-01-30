@@ -58,7 +58,7 @@ function createFeatures(earthquakeData, plateData) {
                 // radius is related to depth
                 radius: getRadius(feature.geometry.coordinates[2])
             }).bindPopup("<h3>" + feature.properties.place +
-            "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+            "</h3><hr><p>" + new Date(feature.properties.time) + "<br>"+ "Magnitude: "  + feature.properties.mag + "</p>");
         }
     });
 
