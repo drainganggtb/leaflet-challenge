@@ -2,25 +2,37 @@
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 //colorbrewer colors to be used in getColor function
-//// 
+// ['#ffffb2','#fed976','#feb24c','#fd8d3c','#f03b20','#bd0026']
 
 //function to determine color of markers
 function getColor(d) {
     if (d < 1) {
-        color = '';
+        color = '#ffffb2';
     } else if (d <2) {
-        color= '';
+        color= '#fed976';
     } else if (d <3) {
-        color= '';
+        color= '#feb24c';
     } else if (d <4) {
-        color= '';
+        color= '#fd8d3c';
     } else if (d <5) {
-        color= '';
+        color= '#f03b20';
     } else {
-        color '';
+        color= '#bd0026';
     }
     return color
 }
+
+//function based on depth (m) to get radius of markers(pixels)
+function getRadius(d) {
+    return 15000 * d;
+}
+
+
+// Perform a GET request to the query URL
+d3.json(queryUrl, function(earthquakeData) {
+    createFeatures(earthquakeData.features);
+});
+
 
 function createMap(earthquakes) {
 
@@ -86,6 +98,3 @@ function createFeatures(earthquakeData) {
   // Sending our earthquakes layer to the createMap function
   createMap(earthquakes);
 }
-
-// Perform a GET request to the query URL
-d3.json(queryUrl, createFeatures);
